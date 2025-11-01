@@ -29,10 +29,14 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Building packages
-        uses: sbwml/openwrt-gh-action-sdk@main
+      - name: Build with Static Linking
+        run: |
+          sed -i '/golang-package/a \\tGO_PKG_DEFAULT_LDFLAGS:=-w -s -extldflags "-static"' tailscale/Makefile
+
+      - name: Build Packages
+        uses: sbwml/openwrt-gh-action-sdk@go1.25
         env:
-          ARCH: ${{ matrix.arch }}-openwrt-24.10
+          ARCH: ${{ matrix.arch }}-${{ matrix.sdk }}
           FEEDNAME: packages_ci
           PACKAGES: luci-app-tailscale
           NO_REFRESH_CHECK: true
@@ -40,8 +44,10 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.arch }}
-          path: bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+          name: ${{ matrix.arch }}-${{ matrix.sdk }}
+          path: |
+            bin/packages/${{ matrix.arch }}/packages_ci/*.apk
+            bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
 
       - name: Upload packages
         uses: ncipollo/release-action@v1
