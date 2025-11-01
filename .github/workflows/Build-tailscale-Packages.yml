@@ -29,6 +29,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Build with Static Linking
+        run: |
+          sed -i '/golang-package/a \\tGO_PKG_DEFAULT_LDFLAGS:=-w -s -extldflags "-static"' tailscale/Makefile
+
       - name: Building packages
         uses: sbwml/openwrt-gh-action-sdk@main
         env:
