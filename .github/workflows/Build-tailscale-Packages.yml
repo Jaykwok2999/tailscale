@@ -51,6 +51,13 @@ jobs:
             bin/packages/${{ matrix.arch }}/packages_ci/*.apk
             bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
 
+      - name: Create compress files
+        continue-on-error: true
+        run: |
+          if [ "${{ matrix.arch }}" ] && [ "${{ matrix.sdk }}" ]; then
+            tar -zcvf ${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/${{ matrix.arch }}/ packages_ci
+          fi
+
       - name: Upload packages
         uses: ncipollo/release-action@v1
         with:
