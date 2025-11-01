@@ -41,8 +41,8 @@ jobs:
         git clone --depth=1 https://github.com/Jaykwok2999/istoreos-ipk.git -b main
         mv ./istoreos-ipk/tailscale ./tailscale/
         rm -rf ./istoreos-ipk
-        
-        
+        rm -rf ./tailscale/Makefile
+        cp -af ./patch/tailscale/Makefile tailscale/
         
         
     - name: Apply
