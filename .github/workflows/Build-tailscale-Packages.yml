@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.arch }}
+    name: Build ${{ matrix.arch }}-${{ matrix.sdk }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -23,6 +23,8 @@ jobs:
           - aarch64_cortex-a53
           - mipsel_24kc
           - x86_64
+        sdk:
+          - openwrt-24.10
 
     steps:
       - uses: actions/checkout@v4
