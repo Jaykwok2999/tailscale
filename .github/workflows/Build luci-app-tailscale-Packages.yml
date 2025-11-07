@@ -54,7 +54,7 @@ jobs:
       - name: Create compress files
         continue-on-error: true
         run: |
-          if [ "${{ matrix.arch }}" ] && [ "${{ matrix.sdk }}" = "SNAPSHOT" ]; then
+          if [ "${{ matrix.arch }}" ] && [ "${{ matrix.sdk }}" = "openwrt-24.10" ]; then
             tar -zcvf ${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/${{ matrix.arch }}/ packages_ci
           fi
 
