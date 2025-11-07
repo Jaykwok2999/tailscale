@@ -44,6 +44,7 @@ jobs:
           NO_REFRESH_CHECK: true
 
       - name: Upload artifacts
+        if: steps.compile.outputs.status == 'success' && ${{ matrix.arch }}-${{ matrix.sdk }} != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.arch }}-${{ matrix.sdk }}
@@ -52,6 +53,7 @@ jobs:
             bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
 
       - name: Upload packages
+        if: steps.compile.outputs.status == 'success' && ${{ matrix.arch }}-${{ matrix.sdk }} != 'true'
         uses: ncipollo/release-action@v1
         with:
           name: ${{ github.ref_name }}
