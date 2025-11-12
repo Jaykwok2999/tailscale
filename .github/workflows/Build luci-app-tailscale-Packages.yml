@@ -52,7 +52,6 @@ jobs:
           FEEDNAME: packages_ci
           PACKAGES: luci-app-tailscale
           NO_REFRESH_CHECK: true
-          IGNORE_ERRORS: true
 
       - name: Store packages
         uses: actions/upload-artifact@main
