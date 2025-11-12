@@ -43,7 +43,7 @@ jobs:
           keep_latest: 81
           delete_tags: true
         env:
-           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build
         uses: kenzok8/gh-action-sdk@hash
@@ -67,7 +67,7 @@ jobs:
       - name: Upload packages
         uses: ncipollo/release-action@main
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           artifacts: "${{ matrix.arch }}-${{ matrix.sdk }}.zip,bin/packages/${{ matrix.arch }}/packages_ci/*.ipk"
           allowUpdates: true
           replacesArtifacts: true
