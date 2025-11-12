@@ -1,4 +1,4 @@
-name: Build luci-app-tailscale-Packages
+name: Build luci-app-tailscale
 
 on: 
   repository_dispatch:
@@ -14,56 +14,62 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.arch }}-${{ matrix.sdk }}
+    name: build ${{ matrix.arch }}-${{ matrix.sdk }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
+        sdk:
+          - 24.10.3
         arch:
           - aarch64_cortex-a53
           - mipsel_24kc
           - x86_64
-        sdk:
-          - openwrt-24.10
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@main
         with:
           fetch-depth: 0
 
-      - name: Build with Static Linking
-        run: |
-          sed -i '/golang-package/a \\tGO_PKG_DEFAULT_LDFLAGS:=-w -s -extldflags "-static"' tailscale/Makefile
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@main
+        with:
+          retain_days: 10
+          keep_minimum_runs: 8
+    
+      - name: Remove old Releases
+        uses: dev-drprasad/delete-older-releases@master
+        with:
+          keep_latest: 81
+          delete_tags: true
+        env:
+           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Build Packages
-        uses: sbwml/openwrt-gh-action-sdk@go1.25
+      - name: Build
+        uses: kenzok8/gh-action-sdk@hash
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.sdk }}
           FEEDNAME: packages_ci
           PACKAGES: luci-app-tailscale
           NO_REFRESH_CHECK: true
+          IGNORE_ERRORS: true
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - name: Store packages
+        uses: actions/upload-artifact@main
         with:
           name: ${{ matrix.arch }}-${{ matrix.sdk }}
-          path: |
-            bin/packages/${{ matrix.arch }}/packages_ci/*.apk
-            bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+          path: bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
 
-      - name: Create compress files
-        continue-on-error: true
+      - name: Zip packages
         run: |
-          if [ "${{ matrix.arch }}" ] && [ "${{ matrix.sdk }}" = "openwrt-24.10" ]; then
-            tar -zcvf ${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/${{ matrix.arch }}/ packages_ci
-          fi
-
+          zip -j ${{ matrix.arch }}-${{ matrix.sdk }}.zip bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+          
       - name: Upload packages
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@main
         with:
-          name: ${{ github.ref_name }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.ACCESS_TOKEN }}
+          artifacts: "${{ matrix.arch }}-${{ matrix.sdk }}.zip,bin/packages/${{ matrix.arch }}/packages_ci/*.ipk"
           allowUpdates: true
           replacesArtifacts: true
-          prerelease: false
-          artifacts: "${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz"
+          bodyFile: "release.txt"
+          tag: ${{ github.run_number }}-${{ matrix.arch }}
