@@ -71,5 +71,4 @@ jobs:
           artifacts: "${{ matrix.arch }}-${{ matrix.sdk }}.zip,bin/packages/${{ matrix.arch }}/packages_ci/*.ipk"
           allowUpdates: true
           replacesArtifacts: true
-          bodyFile: "release.txt"
           tag: ${{ github.run_number }}-${{ matrix.arch }}
