@@ -31,35 +31,19 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          retain_days: 10
-          keep_minimum_runs: 8
-    
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@master
-        with:
-          keep_latest: 81
-          delete_tags: true
-        env:
-           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build
         uses: kenzok8/gh-action-sdk@hash
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.sdk }}
           FEEDNAME: packages_ci
-          PACKAGES: luci-app-tailscale
+          PACKAGES:: luci-app-tailscale tailscale
           NO_REFRESH_CHECK: true
 
       - name: Store packages
         uses: actions/upload-artifact@main
         with:
           name: ${{ matrix.arch }}-${{ matrix.sdk }}
-          path: |
-            bin/packages/${{ matrix.arch }}/packages_ci/*.apk
-            bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+          path: bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
 
       - name: Zip packages
         run: |
