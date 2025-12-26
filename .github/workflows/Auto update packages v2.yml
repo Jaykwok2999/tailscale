@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2022-2024 JAYKWOK <https://github.com/JayKwok2999>
+# Copyright (c) 2022-2024 SMALLPROGRAM <https://github.com/smallprogram>
 # Description: Auto update packages v2
 #
 name: "Auto update packages v2"
@@ -64,8 +64,8 @@ jobs:
       matrix:
         pakcages: [tailscale]
         include:
-            - pakcages: hysteria
-            folder: hysteria
+          - pakcages: tailscale
+            folder: tailscale
             version_head: PKG_VERSION:=
             hash_head: PKG_HASH:=
             version_line:
@@ -90,13 +90,6 @@ jobs:
         run: |
           is_continue=true
           
-          if [ "${{ github.event.inputs.is_update_geodata }}" != "true" ] && [ "${{ matrix.pakcages }}" = "v2ray-geoip" ]; then
-            is_continue=false
-          fi
-          if [ "${{ github.event.inputs.is_update_geodata }}" != "true" ] && [ "${{ matrix.pakcages }}" = "v2ray-geosite" ]; then
-            is_continue=false
-          fi
-
           if [ "$is_continue" = "true" ]; then
             cd && cd $GITHUB_WORKSPACE/${{ matrix.folder }}
             if [ ! -n "${{ matrix.version_line }}" ] ; then
