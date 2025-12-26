@@ -33,11 +33,7 @@ jobs:
           mkdir -p output old_json
 
           declare -A repos
-          repos["geoview"]="snowie2000/geoview"
-          repos["chinadns-ng"]="zfl9/chinadns-ng"
-          repos["xray"]="XTLS/Xray-core"
-          repos["sing-box"]="SagerNet/sing-box"
-          repos["hysteria"]="HyNetwork/hysteria"
+          repos["tailscale"]="tailscale/tailscale"
 
           echo "Downloading previous api-cache release assets (if exists)..."
           gh release download api-cache --dir old_json --pattern "*.json" || echo "No previous release found"
