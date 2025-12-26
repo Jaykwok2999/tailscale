@@ -72,7 +72,7 @@ jobs:
             hash_line:
             release_api_command: curl -sL "https://api.github.com/repos/tailscale/tailscale/releases" | jq -r 'map(select(.prerelease|not)) | first | .tag_name' | sed -e 's/.*v//'
             prerelease_api_command: curl -sL "https://api.github.com/repos/tailscale/tailscale/releases" | jq -r 'first | .tag_name' | sed -e 's/.*v//'
-            release_download_url: https://codeload.github.com/tailscale/tailscale/tar.gz/app/v
+            release_download_url: https://codeload.github.com/tailscale/tailscale/tar.gz/v
             file_name:
 
     steps:
@@ -134,6 +134,7 @@ jobs:
           else
             echo "status=failure" >> $GITHUB_OUTPUT
           fi
+
 
 
       - name: Update ${{ matrix.pakcages }}
