@@ -176,7 +176,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          #branch="patches-${{ matrix.pakcages }}-${{ steps.update.outputs.version }}"
+          branch="patches-${{ matrix.pakcages }}-${{ steps.update.outputs.version }}"
           title="${{ matrix.pakcages }}: update to ${{ steps.update.outputs.version }}"
           EXISTING=$(gh pr list \
             --state open \
@@ -185,18 +185,18 @@ jobs:
             --jq ".[] | select(.title == \"$title\") | .number" \
             || echo "")
 
-          #if [ -n "$EXISTING" ]; then
-            #echo "Duplicate PR with title '$TITLE' already exists: #$EXISTING"
-          #else
+          if [ -n "$EXISTING" ]; then
+            echo "Duplicate PR with title '$TITLE' already exists: #$EXISTING"
+          else
             git config --global user.email "194788255+Jaykwok2999@users.noreply.github.com"
             git config --global user.name "Jaykwok2999"
 
             
-            #echo "No duplicate found, will create PR."
-            #git checkout -b "$branch"
-            #git add .
-            #git commit -m "${{ matrix.pakcages }}: update to ${{ steps.update.outputs.version }}"
-            #git push origin $branch
+            echo "No duplicate found, will create PR."
+            git checkout -b "$branch"
+            git add .
+            git commit -m "${{ matrix.pakcages }}: update to ${{ steps.update.outputs.version }}"
+            git push origin $branch
 
             gh pr create \
             --title "$title" \
