@@ -14,62 +14,58 @@ on:
 
 jobs:
   build:
-    name: build ${{ matrix.arch }}-${{ matrix.sdk }}
+    name: Build ${{ matrix.arch }}-${{ matrix.sdk }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        sdk:
-          - 24.10.3
         arch:
           - aarch64_cortex-a53
           - x86_64
+        sdk:
+          - openwrt-24.10
 
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build
-        uses: kenzok8/gh-action-sdk@hash
+      - name: Build with Static Linking
+        run: |
+          sed -i '/golang-package/a \\tGO_PKG_DEFAULT_LDFLAGS:=-w -s -extldflags "-static"' tailscale/Makefile
+
+      - name: Build Packages
+        uses: sbwml/openwrt-gh-action-sdk@go1.25
         env:
           ARCH: ${{ matrix.arch }}-${{ matrix.sdk }}
           FEEDNAME: packages_ci
-          PACKAGES: luci-app-tailscale tailscale
+          PACKAGES: luci-app-tailscale
           NO_REFRESH_CHECK: true
-          IGNORE_ERRORS: true
 
-      - name: Store packages
-        uses: actions/upload-artifact@main
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.arch }}-${{ matrix.sdk }}
-          path: bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
+          path: |
+            bin/packages/${{ matrix.arch }}/packages_ci/*.apk
+            bin/packages/riscv64_generic/packages_ci/*.apk
+            bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
 
-      - name: Zip packages
+      - name: Create compress files
+        continue-on-error: true
         run: |
-          zip -j ${{ matrix.arch }}-${{ matrix.sdk }}.zip bin/packages/${{ matrix.arch }}/packages_ci/*.ipk
-          echo -e "使用方法：将整合包上传到openwrt设备的tmp目录，输入命令 \`opkg install *.ipk\`\n" >> release.txt
-          
+          if [ "${{ matrix.arch }}" = "riscv64_riscv64" ] && [ "${{ matrix.sdk }}" = "SNAPSHOT" ]; then
+            tar -zcvf ${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/riscv64_generic/ packages_ci
+          else
+            tar -zcvf ${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz -C bin/packages/${{ matrix.arch }}/ packages_ci
+          fi
+
       - name: Upload packages
-        uses: ncipollo/release-action@main
+        uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          artifacts: "${{ matrix.arch }}-${{ matrix.sdk }}.zip,bin/packages/${{ matrix.arch }}/packages_ci/*.ipk"
+          name: ${{ github.ref_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           allowUpdates: true
           replacesArtifacts: true
-          bodyFile: "release.txt"
-          tag: ${{ github.run_number }}-${{ matrix.arch }}
-
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          retain_days: 10
-          keep_minimum_runs: 2
-    
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@master
-        with:
-          keep_latest: 60
-          delete_tags: true
-        env:
-           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          prerelease: false
+          artifacts: "${{ matrix.sdk }}-${{ matrix.arch }}.tar.gz"
