@@ -38,9 +38,9 @@ jobs:
         
         
          
-        git clone --depth=1 https://github.com/asvow/luci-app-tailscale.git ./pass
-        mv ./pass/luci-app-tailscale ./luci-app-tailscale
-        rm -rf ./pass
+        git clone --depth=1 https://github.com/asvow/luci-app-tailscale.git ./luci-app-tailscale
+        #mv ./pass/luci-app-tailscale ./luci-app-tailscale
+        #rm -rf ./pass
         
         
         
