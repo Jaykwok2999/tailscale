@@ -232,8 +232,8 @@ jobs:
 
       - name: "准备源码"
         run: |
-          git clone https://github.com/${{ env.LUCI_REPO }} luci-app-tailscale
-          cd luci-app-tailscale/luci-app-tailscale
+          git clone https://github.com/${{ env.LUCI_REPO }}
+          cd luci-app-tailscale
           
           # 删除由 tailscale 包提供的文件
           rm -rf root/etc/init.d root/etc/config root/usr/sbin 2>/dev/null || true
