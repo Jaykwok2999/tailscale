@@ -16,7 +16,7 @@ permissions:
 
 env:
   TAILSCALE_REPO: "tailscale/tailscale"
-  LUCI_REPO: "asvow/luci-app-tailscale"
+  LUCI_REPO: "Jaykwok2999/tailscale"
   ENABLE_COMPRESSION: ${{ github.event_name == 'schedule' || inputs.enable_compression == true }}
 
 jobs:
@@ -233,7 +233,7 @@ jobs:
       - name: "准备源码"
         run: |
           git clone https://github.com/${{ env.LUCI_REPO }} luci-app-tailscale
-          cd luci-app-tailscale
+          cd luci-app-tailscale/luci-app-tailscale
           
           # 删除由 tailscale 包提供的文件
           rm -rf root/etc/init.d root/etc/config root/usr/sbin 2>/dev/null || true
