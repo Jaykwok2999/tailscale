@@ -224,7 +224,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { sdk: SNAPSHOT, pkg_type: apk }
           - { sdk: openwrt-24.10, pkg_type: ipk }
     name: "LuCI-${{ matrix.pkg_type }}"
     steps:
