@@ -16,7 +16,7 @@ permissions:
 
 env:
   TAILSCALE_REPO: "tailscale/tailscale"
-  LUCI_REPO: "Jaykwok2999/tailscale"
+  LUCI_REPO: "Jaykwok2999/tailscale/luci-app-tailscale"
   ENABLE_COMPRESSION: ${{ github.event_name == 'schedule' || inputs.enable_compression == true }}
 
 jobs:
