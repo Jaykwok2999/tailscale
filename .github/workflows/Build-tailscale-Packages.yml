@@ -16,7 +16,7 @@ permissions:
 
 env:
   TAILSCALE_REPO: "tailscale/tailscale"
-  LUCI_REPO: "Jaykwok2999/tailscale"
+  LUCI_REPO: "asvow/luci-app-tailscale"
   ENABLE_COMPRESSION: ${{ github.event_name == 'schedule' || inputs.enable_compression == true }}
 
 jobs:
@@ -224,6 +224,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - { sdk: SNAPSHOT, pkg_type: apk }
           - { sdk: openwrt-24.10, pkg_type: ipk }
     name: "LuCI-${{ matrix.pkg_type }}"
     steps:
@@ -231,7 +232,7 @@ jobs:
 
       - name: "准备源码"
         run: |
-          git clone https://github.com/${{ env.LUCI_REPO }}
+          git clone https://github.com/${{ env.LUCI_REPO }} luci-app-tailscale
           cd luci-app-tailscale
           
           # 删除由 tailscale 包提供的文件
