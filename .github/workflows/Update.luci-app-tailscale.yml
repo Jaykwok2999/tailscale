@@ -34,11 +34,11 @@ jobs:
     - name: Update.tailscale
       run: |
 
-        rm -rf ./luci-app-tailscale
+        rm -rf ./*
         
         
          
-        git clone --depth=1 https://github.com/asvow/luci-app-tailscale.git ./luci-app-tailscale
+        git clone --depth=1 https://github.com/asvow/luci-app-tailscale.git ./
         #mv ./pass/luci-app-tailscale ./luci-app-tailscale
         #rm -rf ./pass
         
