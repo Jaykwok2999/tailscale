@@ -1,4 +1,4 @@
-name: Update.luci-app-tailscale
+name: dele.-tailscale
 on: 
   repository_dispatch:
   workflow_dispatch:
