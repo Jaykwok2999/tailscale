@@ -23,7 +23,7 @@ on:
         default: 'false'  
         
   schedule:
-    - cron: "0 */4 * * *"
+    - cron: "30 17 * * *"
 env:
   TZ: Asia/Shanghai
 
