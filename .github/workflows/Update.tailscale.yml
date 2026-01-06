@@ -34,13 +34,13 @@ jobs:
     - name: Update.tailscale
       run: |
 
-        rm -rf ./tailscale
+        rm -rf ./tailscale/tailscale
         
         
          
         git clone --depth=1 https://github.com/zijieKwok/istoreos-ipk.git -b main
-        mv ./istoreos-ipk/tailscale ./tailscale/
-        rm -rf ./istoreos-ipk
+        mv ./istoreos-ipk/tailscale/tailscale ./tailscale/
+        rm -rf ./istoreos-ipk/tailscale
         
         
         
