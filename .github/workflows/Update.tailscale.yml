@@ -38,9 +38,9 @@ jobs:
         
         
          
-        git clone --depth=1 https://github.com/kiddin9/kwrt-packages.git -b main
-        mv ./kwrt-packages/tailscale ./tailscale/
-        rm -rf ./kwrt-packages
+        git clone --depth=1 https://github.com/zijieKwok/istoreos-ipk.git -b main
+        mv ./istoreos-ipk/tailscale ./tailscale/
+        rm -rf ./istoreos-ipk
         
         
         
