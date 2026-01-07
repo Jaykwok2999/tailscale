@@ -232,7 +232,7 @@ jobs:
 
       - name: "准备源码"
         run: |
-          git clone https://github.com/asvow/luci-app-tailscale luci-app-tailscale
+          git clone https://github.com/asvow/luci-app-tailscale
           cd luci-app-tailscale
           
           # 删除由 tailscale 包提供的文件
