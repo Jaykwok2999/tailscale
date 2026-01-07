@@ -38,9 +38,9 @@ jobs:
         
         
          
-        git clone --depth=1 https://github.com/zijieKwok/istoreos-ipk.git -b main
-        mv ./istoreos-ipk/tailscale/tailscale ./tailscale/
-        rm -rf ./istoreos-ipk
+        git clone --depth=1 https://github.com/kiddin9/openwrt-tailscale.git -b main
+        mv ./openwrt-tailscale/tailscale ./tailscale/
+        rm -rf ./openwrt-tailscale
         
         
         
