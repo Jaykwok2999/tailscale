@@ -51,7 +51,7 @@ jobs:
             sed -i "s/^PKG_VERSION:=.*/PKG_VERSION:=$LATEST/; s/^PKG_HASH:=.*/PKG_HASH:=$HASH/" tailscale/Makefile
             
             git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git config user.email "194788255+Jaykwok2999@users.noreply.github.com"
             git commit -am "tailscale: update to $LATEST" || true
             git push || true
           fi
