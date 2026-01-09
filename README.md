@@ -1,12 +1,4 @@
-## 📥 安装说明
-## 终端执行以下命令，自动下载安装自动识别架构
-  ```bash
-  curl -fsSL "https://gitlab.com/Jaykwok2999/luci-app-tailscale/-/raw/main/Auto_Install_Script.sh" | sh -s tailscale
-  ```
-  ## 或
-  ```bash
-  wget -q -O - "https://gitlab.com/Jaykwok2999/luci-app-tailscale/-/raw/main/Auto_Install_Script.sh" | sh -s tailscale
-  ```
+### 📥 安装说明
 ## 😉手动安装
 
   ⚠️ **重要：必须先安装 Tailscale，再安装 LuCI**
