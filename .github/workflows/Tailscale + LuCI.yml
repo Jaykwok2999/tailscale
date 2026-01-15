@@ -10,7 +10,7 @@ on:
         default: true
 
   schedule:
-    - cron: '0 16 * * *'
+  #  - cron: '0 16 * * *'
 
 permissions:
   contents: write
